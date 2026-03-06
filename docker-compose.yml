@@ -1,0 +1,19 @@
+services:
+  toolkit:
+    build: .
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./outputs:/app/outputs
+      - ./datasets:/app/datasets
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    env_file:
+      - .env
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
